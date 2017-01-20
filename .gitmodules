@@ -1,0 +1,3 @@
+[submodule "neovim/plugins/vim-plug"]
+	path = neovim/plugins/vim-plug
+	url = https://github.com/junegunn/vim-plug
