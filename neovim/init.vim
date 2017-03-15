@@ -70,11 +70,14 @@ autocmd VimEnter,BufWritePost *.[c|py] :call CreateCtagsFile(&ft)
 
 let mapleader = "\<Space>"
 
+" remap to escape terminal
+tnoremap <Esc> <C-\><C-n>
+
 " search whole source code in directory
 nnoremap <F2> :AsyncRun ag -G "\.c" --ignore unitTests <cword><CR>:copen<CR>
 " (?!t) exclude for example html
 nnoremap <F3> :AsyncRun ag -G "\.h(?!t)" --ignore unitTests <cword><CR>:copen<CR>
-nnoremap <F4> :AsyncRun ag -G "\.c" --ignore unitTests <C-R>*<CR>:copen<CR>
+nnoremap <F4> :AsyncRun ag -G "\.c" --ignore unitTests "<C-R>*"<CR>:copen<CR>
 
 ""make
 nnoremap <leader>m :AsyncRun make all<CR>:copen<CR>
