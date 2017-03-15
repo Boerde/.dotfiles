@@ -70,6 +70,16 @@ autocmd VimEnter,BufWritePost *.[c|py] :call CreateCtagsFile(&ft)
 
 let mapleader = "\<Space>"
 
+" remap to switch windows in any mode with alt and "h/j/k/l"
+tnoremap <A-h> <C-\><C-n><C-w>h
+tnoremap <A-j> <C-\><C-n><C-w>j
+tnoremap <A-k> <C-\><C-n><C-w>k
+tnoremap <A-l> <C-\><C-n><C-w>l
+nnoremap <A-h> <C-w>h
+nnoremap <A-j> <C-w>j
+nnoremap <A-k> <C-w>k
+nnoremap <A-l> <C-w>l
+
 " remap to escape terminal
 tnoremap <Esc> <C-\><C-n>
 
