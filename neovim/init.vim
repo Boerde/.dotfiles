@@ -23,6 +23,9 @@ let g:deoplete#enable_at_startup = 1
 let g:deoplete#tag#cache_limit_size = 500000000
 let g:deoplete#auto_complete_delay = 50
 
+" disable mouse
+set mouse =
+
 " Taglist open on start
 let g:Tlist_Auto_Open = 1
 " Close Taglist when it is the last window
@@ -98,6 +101,9 @@ set hidden
 func! Test(timer)
     :AsyncRun ctags -R
 endfunc
+
+""""" TAGS
+set tags=tags
 
 """"" Tabs
 set tabstop=4
