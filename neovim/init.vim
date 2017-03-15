@@ -51,20 +51,20 @@ function! CreateCtagsFile (file_ext)
             " :AsyncRun ./scripts/tags.sh tags
             :AsyncRun make tags
         else
-            :AsyncRun ctags -R --languages=C
+            :AsyncRun find . -not \( -path ./ip/metaswitch -prune \) -not \( -path ./cas -prune \) -name "*\.[c|h]" -exec ctags --sort=yes {} +
         endif
     elseif a:file_ext == 'python'
         " get git root directory
         :let l:git_root = system('git rev-parse --show-toplevel')
         " build tags from root of directory instead of current dir
-        :execute "AsyncRun ctags -R --languages=Python " . l:git_root
+        :execute "AsyncRun ctags -R --languages=Python --sort=yes " . l:git_root
     endif
 endfun
 
 """" AUTOCMD
 autocmd BufWritePre * :call TrimWhiteSpace()
 " create tags
-autocmd BufAdd,BufWritePost *.[c|py] :call CreateCtagsFile(&ft)
+autocmd VimEnter,BufWritePost *.[c|py] :call CreateCtagsFile(&ft)
 
 """"" HOTKEYS
 
