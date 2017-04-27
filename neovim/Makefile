@@ -2,12 +2,13 @@ CONFIG_PATH=~/.config/nvim
 
 install: plugins-install
 	mkdir -p $(CONFIG_PATH)
-	rm $(CONFIG_PATH)/init.vim
+	rm -f $(CONFIG_PATH)/init.vim
 	# link vim config
 	ln -sv ~/.dotfiles/neovim/init.vim $(CONFIG_PATH)
 	# link spell file
 	ln -sv ~/.dotfiles/neovim/spell $(CONFIG_PATH)
 
 plugins-install:
-	rm ~/.local/share/nvim/site/autoload/plug.vim
+	rm -f ~/.local/share/nvim/site/autoload/plug.vim
+	mkdir -p ~/.local/share/nvim/site/autoload
 	ln -sv ~/.dotfiles/neovim/plugins/vim-plug/plug.vim ~/.local/share/nvim/site/autoload

@@ -16,7 +16,7 @@ install-neovim:
 
 install-bashrc:
 	echo "Installing: Bashrc"
-	rm ~/.bashrc
+	rm -f ~/.bashrc
 	ln -sv ~/.dotfiles/.bashrc ~/.bashrc
 
 install-fzf:
