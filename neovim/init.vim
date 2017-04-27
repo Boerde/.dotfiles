@@ -62,7 +62,6 @@ function! CreateCtagsFile (file_ext)
 endfun
 
 """" AUTOCMD
-autocmd BufWritePre * :call TrimWhiteSpace()
 " create tags
 autocmd VimEnter,BufWritePost *.[c|py] :call CreateCtagsFile(&ft)
 

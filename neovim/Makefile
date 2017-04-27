@@ -11,7 +11,3 @@ install: plugins-install
 plugins-install:
 	rm ~/.local/share/nvim/site/autoload/plug.vim
 	ln -sv ~/.dotfiles/neovim/plugins/vim-plug/plug.vim ~/.local/share/nvim/site/autoload
-
-
-
-
