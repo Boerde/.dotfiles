@@ -105,6 +105,8 @@ inoremap jj <ESC>
 set hidden
 :nnoremap <C-k> :bnext<CR>
 :nnoremap <C-j> :bprevious<CR>
+tnoremap <C-k> <C-\><C-n>:bnext<CR>
+tnoremap <C-j> <C-\><C-n>:bprevious<CR>
 
 "quickfix list
 :nnoremap <leader>j :cp<CR>
