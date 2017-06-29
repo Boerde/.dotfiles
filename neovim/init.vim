@@ -21,7 +21,10 @@ call plug#end()
 
 " deoplete on startup
 let g:deoplete#enable_at_startup = 1
-let g:deoplete#tag#cache_limit_size = 500000000
+let g:deoplete#tag#cache_limit_size = 50000000
+let g:deoplete#sources = {}
+let g:deoplete#sources._ = ['buffer']
+let g:deoplete#sources.c = ['buffer', 'tag']
 let g:deoplete#auto_complete_delay = 50
 
 " disable mouse
