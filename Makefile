@@ -1,4 +1,4 @@
-install: install-neovim install-fzf
+install: install-neovim install-fzf install-bashrc
 
 update: update-repo update-submodule update-fzf
 
