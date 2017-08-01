@@ -2,7 +2,14 @@
 powerline-daemon -q
 POWERLINE_BASH_CONTINUATION=1
 POWERLINE_BASH_SELECT=1
-. /usr/local/lib/python2.7/dist-packages//powerline/bindings/bash/powerline.sh
+if [ -f /usr/local/lib/python2.7/dist-packages/powerline/bindings/bash/powerline.sh ]
+then
+    . /usr/local/lib/python2.7/dist-packages/powerline/bindings/bash/powerline.sh
+fi
+if [ -f /usr/lib/python3.6/site-packages/powerline/bindings/bash/powerline.sh ]
+then
+    . /usr/lib/python3.6/site-packages/powerline/bindings/bash/powerline.sh
+fi
 
 # print directories while Making
 export MDBG=""
@@ -21,7 +28,10 @@ export HISTFILESIZE=100000
 shopt -s histappend
 
 #git autocompletion
-. /etc/bash_completion
+[[ -f /etc/bash_completion ]] && . /etc/bash_completion
+# Use bash-completion, if available
+[[ $PS1 && -f /usr/share/bash-completion/bash_completion ]] && \
+    . /usr/share/bash-completion/bash_completion
 
 # funny stuff
 fortune | cowsay
