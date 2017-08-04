@@ -24,9 +24,12 @@ call plug#end()
 let g:deoplete#enable_at_startup = 1
 let g:deoplete#tag#cache_limit_size = 50000000
 let g:deoplete#sources = {}
-let g:deoplete#sources._ = ['buffer']
-let g:deoplete#sources.c = ['buffer', 'tag']
+let g:deoplete#sources.c = ['buffer', 'tag', 'file']
+let g:deoplete#sources.h = ['buffer', 'tag', 'file']
 let g:deoplete#auto_complete_delay = 50
+
+let g:python_host_prog = '/usr/bin/python'
+let g:python3_host_prog = '/usr/bin/python3'
 
 " disable mouse
 set mouse =
