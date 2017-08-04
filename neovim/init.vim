@@ -39,6 +39,9 @@ let g:Tlist_Auto_Open = 1
 " Close Taglist when it is the last window
 let g:Tlist_Exit_OnlyWindow = 1
 
+" cooperate with errormarker
+let g:asyncrun_auto = "make"
+
 " deoplete tab-complete
 inoremap <expr><tab> pumvisible() ? "\<c-n>" : "\<tab>"
 
