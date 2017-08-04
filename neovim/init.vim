@@ -96,6 +96,9 @@ nnoremap <F2> :AsyncRun ag -G "\.c" --ignore unitTests <cword><CR>:copen<CR>
 nnoremap <F3> :AsyncRun ag -G "\.h(?!t)" --ignore unitTests <cword><CR>:copen<CR>
 nnoremap <F4> :AsyncRun ag -G "\.c" --ignore unitTests "<C-R>*"<CR>:copen<CR>
 
+"" format in c
+nnoremap <leader>f :%!astyle --style=k\&r --brackets=linux --indent-preprocessor --break-blocks --pad-oper --pad-header --unpad-paren --align-pointer=name --convert-tabs<CR>
+
 ""make
 nnoremap <leader>m :AsyncRun make all<CR>:copen<CR>
 " open make errors from subdirs
