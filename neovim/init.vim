@@ -13,7 +13,6 @@ Plug 'kien/ctrlp.vim'
 Plug 'scrooloose/syntastic'
 Plug 'altercation/vim-colors-solarized'
 Plug 'zchee/deoplete-jedi'
-Plug 'mh21/errormarker.vim'
 Plug 'Shougo/neoinclude.vim'
 Plug 'Shougo/neco-vim'
 Plug 'Shougo/neco-syntax'
@@ -38,9 +37,6 @@ set mouse =
 let g:Tlist_Auto_Open = 1
 " Close Taglist when it is the last window
 let g:Tlist_Exit_OnlyWindow = 1
-
-" cooperate with errormarker
-let g:asyncrun_auto = "make"
 
 " deoplete tab-complete
 inoremap <expr><tab> pumvisible() ? "\<c-n>" : "\<tab>"

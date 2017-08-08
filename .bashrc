@@ -1,7 +1,8 @@
 # status bar
 powerline-daemon -q
-POWERLINE_BASH_CONTINUATION=1
-POWERLINE_BASH_SELECT=1
+export POWERLINE_BASH_CONTINUATION=1
+export POWERLINE_BASH_SELECT=1
+
 if [ -f /usr/local/lib/python2.7/dist-packages/powerline/bindings/bash/powerline.sh ]
 then
     . /usr/local/lib/python2.7/dist-packages/powerline/bindings/bash/powerline.sh
@@ -9,6 +10,11 @@ fi
 if [ -f /usr/lib/python3.6/site-packages/powerline/bindings/bash/powerline.sh ]
 then
     . /usr/lib/python3.6/site-packages/powerline/bindings/bash/powerline.sh
+fi
+
+if [ -f /usr/local/bin/nvim ]
+then
+    export GIT_EDITOR=nvim
 fi
 
 # print directories while Making
