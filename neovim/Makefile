@@ -6,6 +6,7 @@ install: plugins-install
 	# link vim config
 	ln -sv ~/.dotfiles/neovim/init.vim $(CONFIG_PATH)
 	# link spell file
+	rm -f $(CONFIG_PATH)/spell
 	ln -sv ~/.dotfiles/neovim/spell $(CONFIG_PATH)
 	sudo pip3 install --upgrade neovim
 
