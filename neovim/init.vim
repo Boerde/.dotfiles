@@ -10,9 +10,10 @@ Plug 'Boerde/vim-addon-linux-coding-style'
 Plug 'vim-scripts/taglist.vim'
 Plug 'moll/vim-bbye'
 Plug 'kien/ctrlp.vim'
-Plug 'scrooloose/syntastic'
+Plug 'w0rp/ale'
 Plug 'altercation/vim-colors-solarized'
 Plug 'zchee/deoplete-jedi'
+Plug 'fishbullet/deoplete-ruby'
 Plug 'Shougo/neoinclude.vim'
 Plug 'Shougo/neco-vim'
 Plug 'Shougo/neco-syntax'
@@ -71,6 +72,8 @@ endfun
 """" AUTOCMD
 " create tags
 autocmd VimEnter,BufWritePost *.[c|py] :call CreateCtagsFile(&ft)
+" set tabs
+autocmd FileType ruby set tabstop=2|set shiftwidth=2
 
 """"" HOTKEYS
 
