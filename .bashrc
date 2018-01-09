@@ -13,6 +13,10 @@ if [ -f /usr/lib/python3.6/site-packages/powerline/bindings/bash/powerline.sh ]
 then
     . /usr/lib/python3.6/site-packages/powerline/bindings/bash/powerline.sh
 fi
+if [ -f /usr/share/powerline/bindings/bash/powerline.sh ]
+then
+    . /usr/share/powerline/bindings/bash/powerline.sh
+fi
 
 if [ -f /usr/local/bin/nvim ]
 then
