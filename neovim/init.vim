@@ -14,12 +14,18 @@ Plug 'w0rp/ale'
 Plug 'altercation/vim-colors-solarized'
 Plug 'zchee/deoplete-jedi'
 Plug 'fishbullet/deoplete-ruby'
+Plug 'Matt-Deacalion/vim-systemd-syntax'
+Plug 'wannesm/wmgraphviz.vim'
+Plug 'ludovicchabant/vim-gutentags'
+Plug 'martinda/Jenkinsfile-vim-syntax'
 Plug 'Shougo/neoinclude.vim'
 Plug 'Shougo/neco-vim'
 Plug 'Shougo/neco-syntax'
 Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 call plug#end()
 
+"ignore unknown chars in terminal
+set guicursor=
 " deoplete on startup
 let g:deoplete#enable_at_startup = 1
 let g:deoplete#tag#cache_limit_size = 50000000
@@ -62,6 +68,8 @@ function! CreateCtagsFile (file_ext)
             :AsyncRun find . -not \( -path ./ip/metaswitch -prune \) -not \( -path ./cas -prune \) -name "*\.[c|h]" -exec ctags --sort=yes {} +
         endif
     elseif a:file_ext == 'python'
+            :AsyncRun ctags --sort=yes -R
+    elseif a:file_ext == 'python'
         " get git root directory
         :let l:git_root = system('git rev-parse --show-toplevel')
         " build tags from root of directory instead of current dir
@@ -71,13 +79,14 @@ endfun
 
 """" AUTOCMD
 " create tags
-autocmd VimEnter,BufWritePost *.[c|py] :call CreateCtagsFile(&ft)
+" autocmd VimEnter,BufWritePost *.[c|py] :call CreateCtagsFile(&ft)
 " set tabs
 autocmd FileType ruby set tabstop=2|set shiftwidth=2
 
 """"" HOTKEYS
 
 let mapleader = "\<Space>"
+let maplocalleader = "\<Space>"
 
 " remap to switch windows in any mode with alt and "h/j/k/l"
 tnoremap <A-h> <C-\><C-n><C-w>h
@@ -170,3 +179,5 @@ let g:ctags_statusline=0
 
 """""" PCTRL
 let g:ctrlp_extensions = ['tag'] "enable search through tags
+let g:ctrlp_working_path_mode = '' "disable search through whole svn/git directory
+

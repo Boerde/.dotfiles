@@ -21,6 +21,7 @@ fi
 if [ -f /usr/local/bin/nvim ]
 then
     export GIT_EDITOR=nvim
+    export SVN_EDITOR=nvim
 fi
 
 # print directories while Making

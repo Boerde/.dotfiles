@@ -8,6 +8,10 @@ install: plugins-install
 	# link spell file
 	rm -f $(CONFIG_PATH)/spell
 	ln -sv ~/.dotfiles/neovim/spell $(CONFIG_PATH)
+	rm -f $(CONFIG_PATH)/syntax
+	ln -sv ~/.dotfiles/neovim/syntax $(CONFIG_PATH)
+	rm -f $(CONFIG_PATH)/ftdetect
+	ln -sv ~/.dotfiles/neovim/ftdetect $(CONFIG_PATH)
 	sudo pip3 install --upgrade neovim
 
 plugins-install:
