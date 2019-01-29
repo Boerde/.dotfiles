@@ -48,6 +48,9 @@ shopt -s histappend
     . /usr/share/bash-completion/bash_completion
 
 # funny stuff
-fortune | cowsay
+if shopt -q login_shell;
+then
+	fortune | cowsay
+fi
 
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
