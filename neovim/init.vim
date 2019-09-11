@@ -11,7 +11,7 @@ Plug 'vim-scripts/taglist.vim'
 Plug 'moll/vim-bbye'
 Plug 'kien/ctrlp.vim'
 Plug 'w0rp/ale'
-Plug 'altercation/vim-colors-solarized'
+Plug 'JulioJu/neovim-qt-colors-solarized-truecolor-only'
 Plug 'zchee/deoplete-jedi'
 Plug 'fishbullet/deoplete-ruby'
 Plug 'Matt-Deacalion/vim-systemd-syntax'
@@ -48,8 +48,8 @@ let g:deoplete#sources.c = ['buffer', 'tag', 'file']
 let g:deoplete#sources.h = ['buffer', 'tag', 'file']
 let g:deoplete#auto_complete_delay = 5
 
-let g:python_host_prog = '/usr/bin/python'
-let g:python3_host_prog = '/usr/bin/python3'
+let g:python_host_prog = 'C:\Python27\python.exe'
+let g:python3_host_prog = 'C:\Users\laurent.soest\AppData\Local\Programs\Python\Python37\python.exe'
 
 " disable mouse
 set mouse =
@@ -116,16 +116,21 @@ nnoremap <A-l> <C-w>l
 tnoremap <Esc> <C-\><C-n>
 
 " search whole source code in directory
-nnoremap <F2> :AsyncRun ag -G "\.c" --ignore unitTests <cword><CR>:copen<CR>
-" (?!t) exclude for example html
-nnoremap <F3> :AsyncRun ag -G "\.h(?!t)" --ignore unitTests <cword><CR>:copen<CR>
-nnoremap <F4> :AsyncRun ag -G "\.c" --ignore unitTests "<C-R>*"<CR>:copen<CR>
+nnoremap <F2> :grep -t c -t cpp -t cs <cword><CR>:copen<CR>
+nnoremap <F3> :grep -t h <cword><CR>:copen<CR>
+"nnoremap <F2> :AsyncRun rg --vimgrep --no-heading -t c -t cpp -t cs <cword><CR>:copen<CR>
+"nnoremap <F3> :AsyncRun rg -t h <cword><CR>:copen<CR>
+nnoremap <F4> :AsyncRun rg "<C-R>*"<CR>:copen<CR>
 
 "" format in c
 nnoremap <leader>f :%!astyle --style=k\&r --brackets=linux --indent-preprocessor --break-blocks --pad-oper --pad-header --unpad-paren --align-pointer=name --convert-tabs<CR>
 
 ""make
 nnoremap <leader>m :AsyncRun make all<CR>:copen<CR>
+
+""copy all to clipboard
+nnoremap <leader>c :%y+<CR>
+
 " open make errors from subdirs
 set path+=$PWD/**
 
@@ -203,7 +208,8 @@ syntax on
 filetype plugin indent on
 filetype plugin on
 set background=dark
-colorscheme solarized
+let $NVIM_TUI_ENABLE_TRUE_COLOR=1
+colorscheme solarized_nvimqt
 set spell spelllang=en_us
 set hlsearch
 
