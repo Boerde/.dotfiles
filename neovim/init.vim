@@ -26,6 +26,20 @@ call plug#end()
 
 "ignore unknown chars in terminal
 set guicursor=
+
+"case
+set ignorecase
+set smartcase
+
+"AsyncRun
+let g:asyncrun_stdin = 1
+
+"grep
+if executable("rg")
+    set grepprg=rg\ --vimgrep\ --no-heading
+    set grepformat=%f:%l:%c:%m,%f:%l:%m
+endif
+
 " deoplete on startup
 let g:deoplete#enable_at_startup = 1
 let g:deoplete#tag#cache_limit_size = 50000000
