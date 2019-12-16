@@ -49,8 +49,7 @@ let g:deoplete#sources.c = ['buffer', 'tag', 'file']
 let g:deoplete#sources.h = ['buffer', 'tag', 'file']
 let g:deoplete#auto_complete_delay = 5
 
-let g:python_host_prog = 'C:\Python27\python.exe'
-let g:python3_host_prog = 'C:\Users\laurent.soest\AppData\Local\Programs\Python\Python37\python.exe'
+call deoplete#custom#var('buffer', 'require_same_filetype', v:false)
 
 " disable mouse
 set mouse =
@@ -97,6 +96,7 @@ endfun
 " autocmd VimEnter,BufWritePost *.[c|py] :call CreateCtagsFile(&ft)
 " set tabs
 autocmd FileType ruby set tabstop=2|set shiftwidth=2
+au FileType xml imap </ </<c-x><c-o>
 
 """"" HOTKEYS
 
@@ -117,11 +117,11 @@ nnoremap <A-l> <C-w>l
 tnoremap <Esc> <C-\><C-n>
 
 " search whole source code in directory
-nnoremap <F2> :grep -t c -t cpp -t cs <cword><CR>:copen<CR>
+"nnoremap <F2> :grep -t c -t cpp -t cs <cword><CR>:copen<CR>
 nnoremap <F3> :grep -t h <cword><CR>:copen<CR>
-"nnoremap <F2> :AsyncRun rg --vimgrep --no-heading -t c -t cpp -t cs <cword><CR>:copen<CR>
+nnoremap <F2> :AsyncRun ag --vimgrep --python --cpp --cc --csharp <cword><CR>:copen<CR>
 "nnoremap <F3> :AsyncRun rg -t h <cword><CR>:copen<CR>
-nnoremap <F4> :AsyncRun rg "<C-R>*"<CR>:copen<CR>
+nnoremap <F4> :AsyncRun ag "<C-R>*"<CR>:copen<CR>
 
 "" format in c
 nnoremap <leader>f :%!astyle --style=k\&r --brackets=linux --indent-preprocessor --break-blocks --pad-oper --pad-header --unpad-paren --align-pointer=name --convert-tabs<CR>
