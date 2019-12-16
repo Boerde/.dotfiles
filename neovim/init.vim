@@ -209,8 +209,8 @@ syntax on
 filetype plugin indent on
 filetype plugin on
 set background=dark
-let $NVIM_TUI_ENABLE_TRUE_COLOR=1
-colorscheme solarized_nvimqt
+"let g:solarized_termcolors = 256
+colorscheme solarized
 set spell spelllang=en_us
 set hlsearch
 
