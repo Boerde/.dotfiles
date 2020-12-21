@@ -3,7 +3,7 @@ powerline-daemon -q
 export POWERLINE_BASH_CONTINUATION=1
 export POWERLINE_BASH_SELECT=1
 
-export PATH=$PATH:~/.gem/ruby/2.4.0/bin
+export PATH=$PATH:~/.gem/ruby/2.4.0/bin:~/.local/bin
 export VISUAL="nvim"
 
 if [ -f /usr/local/lib/python2.7/dist-packages/powerline/bindings/bash/powerline.sh ]
