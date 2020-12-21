@@ -9,10 +9,11 @@ Plug 'bogado/file-line'
 Plug 'Boerde/vim-addon-linux-coding-style'
 Plug 'vim-scripts/taglist.vim'
 Plug 'moll/vim-bbye'
-Plug 'kien/ctrlp.vim'
+Plug 'ctrlpvim/ctrlp.vim'
 Plug 'w0rp/ale'
 Plug 'altercation/vim-colors-solarized'
-Plug 'zchee/deoplete-jedi'
+Plug 'deoplete-plugins/deoplete-jedi'
+Plug 'davidhalter/jedi-vim'
 Plug 'fishbullet/deoplete-ruby'
 Plug 'Matt-Deacalion/vim-systemd-syntax'
 Plug 'wannesm/wmgraphviz.vim'
@@ -24,6 +25,9 @@ Plug 'Shougo/neco-vim'
 Plug 'Shougo/neco-syntax'
 Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 call plug#end()
+
+"disable jedi completion as this is done by deoplete
+let g:jedi#completions_enabled = 0
 
 "ignore unknown chars in terminal
 set guicursor=
@@ -44,10 +48,12 @@ endif
 " deoplete on startup
 let g:deoplete#enable_at_startup = 1
 let g:deoplete#tag#cache_limit_size = 50000000
-let g:deoplete#sources = {}
-let g:deoplete#sources.c = ['buffer', 'tag', 'file']
-let g:deoplete#sources.h = ['buffer', 'tag', 'file']
-let g:deoplete#auto_complete_delay = 5
+
+call deoplete#custom#option('sources', {
+            \'c': ['buffer', 'tag', 'file'],
+            \'h': ['buffer', 'tag', 'file'],
+        \})
+call deoplete#custom#option('auto_complete_delay', 5)
 
 call deoplete#custom#var('buffer', 'require_same_filetype', v:false)
 let g:python_host_prog = 'C:\Python27\python.exe'
@@ -58,6 +64,19 @@ let g:gutentags_project_root = ['USM_ROOT', 'pytest.ini']
 
 " disable mouse
 set mouse =
+
+" AleFix
+let g:ale_fixers = {
+\   '*': ['remove_trailing_lines', 'trim_whitespace'],
+\   'cmake': ['cmakeformat'],
+\   'python': ['remove_trailing_lines', 'trim_whitespace', 'autopep8', 'reorder-python-imports'],
+\   'xml': ['remove_trailing_lines', 'trim_whitespace', 'xmllint'],
+\}
+
+" ale linters
+let g:ale_linters = {
+\   'python': ['flake8', 'pylint', 'mypy'],
+\}
 
 " Taglist open on start
 let g:Tlist_Auto_Open = 1
@@ -170,9 +189,8 @@ set tags=tags
 set tabstop=4
 set shiftwidth=4
 set smarttab
-set expandtab
 set list
-set listchars=tab:>~,nbsp:_,trail:.
+set listchars=tab:\ \ ,nbsp:_,trail:.
 
 set number
 
@@ -186,8 +204,8 @@ set undodir=~/.vim/undo/  " undo directory
 """"" FOLDING
 set foldmethod=indent
 "folding with space
-nnoremap <silent> <Space> @=(foldlevel('.')?'za':"\<Space>")<CR>
-vnoremap <Space> zf
+"nnoremap <silent> <Space> @=(foldlevel('.')?'za':"\<Space>")<CR>
+"vnoremap <Space> zf
 set foldlevelstart=99 "no folds at opem
 
 let g:airline_theme='solarized'
