@@ -50,6 +50,11 @@ let g:deoplete#sources.h = ['buffer', 'tag', 'file']
 let g:deoplete#auto_complete_delay = 5
 
 call deoplete#custom#var('buffer', 'require_same_filetype', v:false)
+let g:python_host_prog = 'C:\Python27\python.exe'
+let g:python3_host_prog = 'C:\Python38\python.exe'
+
+" gutentags
+let g:gutentags_project_root = ['USM_ROOT', 'pytest.ini']
 
 " disable mouse
 set mouse =
@@ -117,11 +122,11 @@ nnoremap <A-l> <C-w>l
 tnoremap <Esc> <C-\><C-n>
 
 " search whole source code in directory
-"nnoremap <F2> :grep -t c -t cpp -t cs <cword><CR>:copen<CR>
+nnoremap <F2> :grep -t py -t c -t cpp -t cs <cword><CR>:copen<CR>
 nnoremap <F3> :grep -t h <cword><CR>:copen<CR>
-nnoremap <F2> :AsyncRun ag --vimgrep --python --cpp --cc --csharp <cword><CR>:copen<CR>
+"nnoremap <F2> :grep -tpy <cword><CR>:copen<CR>
 "nnoremap <F3> :AsyncRun rg -t h <cword><CR>:copen<CR>
-nnoremap <F4> :AsyncRun ag "<C-R>*"<CR>:copen<CR>
+nnoremap <F4> :grep "<C-R>*"<CR>:copen<CR>
 
 "" format in c
 nnoremap <leader>f :%!astyle --style=k\&r --brackets=linux --indent-preprocessor --break-blocks --pad-oper --pad-header --unpad-paren --align-pointer=name --convert-tabs<CR>
