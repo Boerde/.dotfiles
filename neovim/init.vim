@@ -48,15 +48,30 @@ endif
 " deoplete on startup
 let g:deoplete#enable_at_startup = 1
 let g:deoplete#tag#cache_limit_size = 50000000
-let g:deoplete#sources = {}
-let g:deoplete#sources.c = ['buffer', 'tag', 'file']
-let g:deoplete#sources.h = ['buffer', 'tag', 'file']
-let g:deoplete#auto_complete_delay = 5
+
+call deoplete#custom#option('sources', {
+            \'c': ['buffer', 'tag', 'file'],
+            \'h': ['buffer', 'tag', 'file'],
+        \})
+call deoplete#custom#option('auto_complete_delay', 5)
 
 call deoplete#custom#var('buffer', 'require_same_filetype', v:false)
 
 " disable mouse
 set mouse =
+
+" AleFix
+let g:ale_fixers = {
+\   '*': ['remove_trailing_lines', 'trim_whitespace'],
+\   'cmake': ['cmakeformat'],
+\   'python': ['remove_trailing_lines', 'trim_whitespace', 'autopep8', 'reorder-python-imports'],
+\   'xml': ['remove_trailing_lines', 'trim_whitespace', 'xmllint'],
+\}
+
+" ale linters
+let g:ale_linters = {
+\   'python': ['flake8', 'pylint', 'mypy'],
+\}
 
 " Taglist open on start
 let g:Tlist_Auto_Open = 1
