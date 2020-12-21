@@ -11,7 +11,11 @@ Plug 'vim-scripts/taglist.vim'
 Plug 'moll/vim-bbye'
 Plug 'ctrlpvim/ctrlp.vim'
 Plug 'w0rp/ale'
-Plug 'altercation/vim-colors-solarized'
+if has('win32')
+	Plug 'JulioJu/neovim-qt-colors-solarized-truecolor-only'
+else
+	Plug 'altercation/vim-colors-solarized'
+endif
 Plug 'deoplete-plugins/deoplete-jedi'
 Plug 'davidhalter/jedi-vim'
 Plug 'fishbullet/deoplete-ruby'
@@ -231,9 +235,15 @@ let g:syntastic_sh_shellcheck_args = "-e SC2086"
 syntax on
 filetype plugin indent on
 filetype plugin on
+if has('win32')
+	let $NVIM_TUI_ENABLE_TRUE_COLOR=1
+	colorscheme solarized_nvimqt
+else
+	let g:solarized_termcolors = 256
+	colorscheme solarized
+endif
+
 set background=dark
-"let g:solarized_termcolors = 256
-colorscheme solarized
 set spell spelllang=en_us
 set hlsearch
 
