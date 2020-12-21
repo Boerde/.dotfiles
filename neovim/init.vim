@@ -199,8 +199,8 @@ set undodir=~/.vim/undo/  " undo directory
 """"" FOLDING
 set foldmethod=indent
 "folding with space
-nnoremap <silent> <Space> @=(foldlevel('.')?'za':"\<Space>")<CR>
-vnoremap <Space> zf
+"nnoremap <silent> <Space> @=(foldlevel('.')?'za':"\<Space>")<CR>
+"vnoremap <Space> zf
 set foldlevelstart=99 "no folds at opem
 
 let g:airline_theme='solarized'
