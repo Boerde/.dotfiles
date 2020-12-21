@@ -9,10 +9,11 @@ Plug 'bogado/file-line'
 Plug 'Boerde/vim-addon-linux-coding-style'
 Plug 'vim-scripts/taglist.vim'
 Plug 'moll/vim-bbye'
-Plug 'kien/ctrlp.vim'
+Plug 'ctrlpvim/ctrlp.vim'
 Plug 'w0rp/ale'
 Plug 'altercation/vim-colors-solarized'
-Plug 'zchee/deoplete-jedi'
+Plug 'deoplete-plugins/deoplete-jedi'
+Plug 'davidhalter/jedi-vim'
 Plug 'fishbullet/deoplete-ruby'
 Plug 'Matt-Deacalion/vim-systemd-syntax'
 Plug 'wannesm/wmgraphviz.vim'
@@ -24,6 +25,9 @@ Plug 'Shougo/neco-vim'
 Plug 'Shougo/neco-syntax'
 Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 call plug#end()
+
+"disable jedi completion as this is done by deoplete
+let g:jedi#completions_enabled = 0
 
 "ignore unknown chars in terminal
 set guicursor=
