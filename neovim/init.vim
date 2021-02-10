@@ -63,8 +63,11 @@ let g:deoplete#sources#jedi#show_docstring = 1
 call deoplete#custom#option('auto_complete_delay', 5)
 
 call deoplete#custom#var('buffer', 'require_same_filetype', v:false)
-let g:python_host_prog = 'C:\Python27\python.exe'
-let g:python3_host_prog = 'C:\Python38\python.exe'
+
+if has('win32')
+	let g:python_host_prog = 'C:\Python27\python.exe'
+	let g:python3_host_prog = 'C:\Python38\python.exe'
+endif
 
 " gutentags
 let g:gutentags_project_root = ['USM_ROOT', 'pytest.ini']
