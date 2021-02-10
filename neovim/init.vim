@@ -134,6 +134,8 @@ endfun
 autocmd FileType ruby set tabstop=2|set shiftwidth=2
 au FileType xml imap </ </<c-x><c-o>
 
+autocmd BufEnter Jenkins.* set ft=Jenkinsfile
+
 """"" HOTKEYS
 
 let mapleader = "\<Space>"
