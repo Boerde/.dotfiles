@@ -70,7 +70,7 @@ if has('win32')
 endif
 
 " gutentags
-let g:gutentags_project_root = ['USM_ROOT', 'pytest.ini']
+let g:gutentags_project_root = ['USM_ROOT', 'pytest.ini', 'conftest.py']
 
 " disable mouse
 set mouse =
