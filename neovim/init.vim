@@ -81,11 +81,13 @@ let g:ale_fixers = {
 \   'cmake': ['cmakeformat'],
 \   'python': ['remove_trailing_lines', 'trim_whitespace', 'autopep8', 'reorder-python-imports'],
 \   'xml': ['remove_trailing_lines', 'trim_whitespace', 'xmllint'],
+\   'cpp': ['remove_trailing_lines', 'trim_whitespace', 'clang-format', 'clangtidy'],
 \}
 
 " ale linters
 let g:ale_linters = {
 \   'python': ['flake8', 'pylint', 'mypy'],
+\   'cpp': ['cc', 'ccls', 'clangcheck', 'clangd', 'clangtidy', 'clazy', 'cppcheck', 'cpplint', 'cquery', 'flawfinder']
 \}
 
 " Taglist open on start
