@@ -58,6 +58,8 @@ call deoplete#custom#option('sources', {
             \'c': ['buffer', 'tag', 'file'],
             \'h': ['buffer', 'tag', 'file'],
         \})
+let g:deoplete#sources#jedi#enable_short_types = 1
+let g:deoplete#sources#jedi#show_docstring = 1
 call deoplete#custom#option('auto_complete_delay', 5)
 
 call deoplete#custom#var('buffer', 'require_same_filetype', v:false)
