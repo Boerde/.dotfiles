@@ -191,11 +191,6 @@ tnoremap <C-j> <C-\><C-n>:bprevious<CR>
 :nnoremap <leader>j :cp<CR>
 :nnoremap <leader>k :cn<CR>
 
-""""" Functions
-func! Test(timer)
-    :AsyncRun ctags -R
-endfunc
-
 """"" TAGS
 set tags=tags
 
@@ -224,12 +219,25 @@ set foldlevelstart=99 "no folds at opem
 
 let g:airline_theme='solarized'
 
+function! IsWsl()
+  if has("unix")
+    let lines = readfile("/proc/version")
+    if lines[0] =~ "Microsoft"
+      return 1
+    endif
+  endif
+  return 0
+endfunction
+
 syntax on
 filetype plugin indent on
 filetype plugin on
 if has('win32')
 	let $NVIM_TUI_ENABLE_TRUE_COLOR=1
 	colorscheme solarized_nvimqt
+elseif IsWsl()
+	let g:solarized_termcolors = 16
+	colorscheme solarized
 else
 	let g:solarized_termcolors = 256
 	colorscheme solarized
@@ -244,4 +252,3 @@ let g:ctags_statusline=0
 """""" PCTRL
 let g:ctrlp_extensions = ['tag'] "enable search through tags
 let g:ctrlp_working_path_mode = '' "disable search through whole svn/git directory
-
