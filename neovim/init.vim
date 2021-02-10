@@ -224,24 +224,6 @@ set foldlevelstart=99 "no folds at opem
 
 let g:airline_theme='solarized'
 
-" Syntasthic Default Settings
-set statusline+=%#warningmsg#
-set statusline+=%{SyntasticStatuslineFlag()}
-set statusline+=%*
-let g:syntastic_always_populate_loc_list = 1
-let g:syntastic_auto_loc_list = 1
-let g:syntastic_enable_signs = 1
-let g:syntastic_mode_map = { 'mode': 'active', 'active_filetypes': [],'passive_filetypes': ['c'] }
-let g:syntastic_loc_list_height = 5
-let g:syntastic_check_on_open = 1
-" let g:syntastic_check_on_wq = 0
-let g:syntastic_c_no_include_search = 1
-let g:syntastic_c_checkers=['splint']
-let g:syntastic_c_config_file = 'splint.cfg'
-
-" ignore errors in shell
-let g:syntastic_sh_shellcheck_args = "-e SC2086"
-
 syntax on
 filetype plugin indent on
 filetype plugin on
