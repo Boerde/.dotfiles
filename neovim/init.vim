@@ -70,7 +70,12 @@ if has('win32')
 endif
 
 " gutentags
-let g:gutentags_project_root = ['USM_ROOT', 'pytest.ini', 'conftest.py']
+let g:gutentags_project_root = ['USM_ROOT', 'pytest.ini']
+
+"ctrlp
+let g:ctrlp_root_markers = ['USM_ROOT', 'pytest.ini']
+let g:ctrlp_clear_cache_on_exit = 0
+
 
 " disable mouse
 set mouse =
