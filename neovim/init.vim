@@ -41,12 +41,14 @@ set guicursor=
 set ignorecase
 set smartcase
 
+set wildignore+=*.exp,*.inf,tags,*.pyc
+
 "AsyncRun
 let g:asyncrun_stdin = 1
 
 "grep
 if executable("rg")
-    set grepprg=rg\ --vimgrep\ --no-heading
+    set grepprg=rg\ --vimgrep\ --no-heading\ -S\ -g\ !tags
     set grepformat=%f:%l:%c:%m,%f:%l:%m
 endif
 
@@ -87,6 +89,7 @@ let g:ale_fixers = {
 \   'python': ['remove_trailing_lines', 'trim_whitespace', 'autopep8', 'reorder-python-imports'],
 \   'xml': ['remove_trailing_lines', 'trim_whitespace', 'xmllint'],
 \   'cpp': ['remove_trailing_lines', 'trim_whitespace', 'clang-format', 'clangtidy'],
+\   'sh': ['remove_trailing_lines', 'trim_whitespace', 'shfmt'],
 \}
 
 " ale linters
