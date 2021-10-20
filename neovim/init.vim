@@ -24,6 +24,8 @@ Plug 'wannesm/wmgraphviz.vim'
 Plug 'ludovicchabant/vim-gutentags'
 Plug 'martinda/Jenkinsfile-vim-syntax'
 Plug 'wellle/tmux-complete.vim'
+Plug 'hrsh7th/nvim-compe'
+Plug 'neovim/nvim-lspconfig'
 Plug 'Shougo/deoplete-clangx'
 Plug 'Shougo/neoinclude.vim'
 Plug 'Shougo/neco-vim'
@@ -34,6 +36,86 @@ call plug#end()
 "disable jedi completion as this is done by deoplete
 let g:jedi#completions_enabled = 0
 
+autocmd FileType c,cpp,h,hpp
+	\ call deoplete#custom#buffer_option('auto_complete', v:false) |
+	\ let g:ctrlp_user_command = 'rg %s --files --color=never --glob "*.cpp" --glob "*.h"'
+
+lua << EOF
+local nvim_lsp = require('lspconfig')
+
+-- Use an on_attach function to only map the following keys
+-- after the language server attaches to the current buffer
+local on_attach = function(client, bufnr)
+  local function buf_set_keymap(...) vim.api.nvim_buf_set_keymap(bufnr, ...) end
+  local function buf_set_option(...) vim.api.nvim_buf_set_option(bufnr, ...) end
+
+  --Enable completion triggered by <c-x><c-o>
+  -- buf_set_option('omnifunc', 'v:lua.vim.lsp.omnifunc')
+
+  -- Mappings.
+  local opts = { noremap=true, silent=true }
+
+  -- buf_set_keymap('n', '<C-k>', '<cmd>lua vim.lsp.buf.signature_help()<CR>', opts)
+  -- See `:help vim.lsp.*` for documentation on any of the below functions
+  buf_set_keymap('n', 'gD', '<cmd>lua vim.lsp.buf.declaration()<CR>', opts)
+  buf_set_keymap('n', 'gd', '<cmd>lua vim.lsp.buf.definition()<CR>', opts)
+  buf_set_keymap('n', 'K', '<cmd>lua vim.lsp.buf.hover()<CR>', opts)
+  buf_set_keymap('n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<CR>', opts)
+  buf_set_keymap('n', '<space>wa', '<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>', opts)
+  buf_set_keymap('n', '<space>wr', '<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>', opts)
+  buf_set_keymap('n', '<space>wl', '<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>', opts)
+  buf_set_keymap('n', '<space>D', '<cmd>lua vim.lsp.buf.type_definition()<CR>', opts)
+  buf_set_keymap('n', '<space>rn', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
+  buf_set_keymap('n', '<space>ca', '<cmd>lua vim.lsp.buf.code_action()<CR>', opts)
+  buf_set_keymap('n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>', opts)
+  buf_set_keymap('n', '<space>e', '<cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<CR>', opts)
+  buf_set_keymap('n', '[d', '<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>', opts)
+  buf_set_keymap('n', ']d', '<cmd>lua vim.lsp.diagnostic.goto_next()<CR>', opts)
+  buf_set_keymap('n', '<space>q', '<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>', opts)
+  buf_set_keymap('n', '<space>f', '<cmd>lua vim.lsp.buf.formatting()<CR>', opts)
+
+end
+
+-- Use a loop to conveniently call 'setup' on multiple servers and
+-- map buffer local keybindings when the language server attaches
+local servers = { 'clangd' }
+for _, lsp in ipairs(servers) do
+  nvim_lsp[lsp].setup {
+    on_attach = on_attach,
+    flags = {
+      debounce_text_changes = 150,
+    }
+  }
+end
+EOF
+
+
+let g:compe = {}
+let g:compe.enabled = v:true
+let g:compe.autocomplete = v:true
+let g:compe.debug = v:false
+let g:compe.min_length = 1
+let g:compe.preselect = 'enable'
+let g:compe.throttle_time = 80
+let g:compe.source_timeout = 200
+let g:compe.resolve_timeout = 800
+let g:compe.incomplete_delay = 400
+let g:compe.max_abbr_width = 100
+let g:compe.max_kind_width = 100
+let g:compe.max_menu_width = 100
+let g:compe.documentation = v:true
+
+let g:compe.source = {}
+let g:compe.source.path = v:true
+let g:compe.source.buffer = v:true
+let g:compe.source.calc = v:true
+let g:compe.source.nvim_lsp = v:true
+let g:compe.source.nvim_lua = v:true
+let g:compe.source.vsnip = v:true
+let g:compe.source.ultisnips = v:true
+let g:compe.source.luasnip = v:true
+let g:compe.source.emoji = v:true
+
 "ignore unknown chars in terminal
 set guicursor=
 
@@ -41,7 +123,7 @@ set guicursor=
 set ignorecase
 set smartcase
 
-set wildignore+=*.exp,*.inf,tags,*.pyc
+set wildignore+=*.exp,*.inf,tags,*.pyc,*.o,*.a
 
 "AsyncRun
 let g:asyncrun_stdin = 1
@@ -72,11 +154,13 @@ if has('win32')
 endif
 
 " gutentags
-let g:gutentags_project_root = ['USM_ROOT', 'pytest.ini']
+let g:gutentags_project_root = ['USM_ROOT', 'pytest.ini', '_clang-format']
 
 "ctrlp
-let g:ctrlp_root_markers = ['USM_ROOT', 'pytest.ini']
+let g:ctrlp_root_markers = ['USM_ROOT', 'pytest.ini', '_clang-format']
 let g:ctrlp_clear_cache_on_exit = 0
+let g:ctrlp_extensions = ['tag'] "enable search through tags
+let g:ctrlp_working_path_mode = 'r' "disable search through whole svn/git directory
 
 
 " disable mouse
@@ -95,7 +179,7 @@ let g:ale_fixers = {
 " ale linters
 let g:ale_linters = {
 \   'python': ['flake8', 'pylint', 'mypy'],
-\   'cpp': ['cc', 'ccls', 'clangcheck', 'clangd', 'clangtidy', 'clazy', 'cppcheck', 'cpplint', 'cquery', 'flawfinder']
+\   'cpp': ['gcc', 'clangcheck', 'clangtidy', 'clazy', 'cppcheck', 'cpplint', 'cquery', 'flawfinder']
 \}
 
 " Taglist open on start
@@ -257,6 +341,3 @@ set hlsearch
 
 let g:ctags_statusline=0
 
-"""""" PCTRL
-let g:ctrlp_extensions = ['tag'] "enable search through tags
-let g:ctrlp_working_path_mode = '' "disable search through whole svn/git directory
