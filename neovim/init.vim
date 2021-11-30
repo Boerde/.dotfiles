@@ -290,8 +290,9 @@ set tags=tags
 set tabstop=4
 set shiftwidth=4
 set smarttab
+set expandtab
 set list
-set listchars=tab:\ \ ,nbsp:_,trail:.
+set listchars=tab:>~,nbsp:_,trail:.
 
 set number
 
