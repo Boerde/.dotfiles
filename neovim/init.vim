@@ -123,12 +123,12 @@ set guicursor=
 set ignorecase
 set smartcase
 
-set wildignore+=*.exp,*.inf,tags,*.pyc,*.o,*.a
+set wildignore+=*.exp,*.inf,tags,*.pyc,*.o,*.a,*.ninja,*.png,GeneratedProjects/**
 
-"AsyncRun
+" AsyncRun
 let g:asyncrun_stdin = 1
 
-"grep
+" grep
 if executable("rg")
     set grepprg=rg\ --vimgrep\ --no-heading\ -S\ -g\ !tags
     set grepformat=%f:%l:%c:%m,%f:%l:%m
@@ -151,13 +151,15 @@ call deoplete#custom#var('buffer', 'require_same_filetype', v:false)
 if has('win32')
 	let g:python_host_prog = 'C:\Python27\python.exe'
 	let g:python3_host_prog = 'C:\Python38\python.exe'
+else
+    let g:python3_host_prog = '/home/lsoest/venv_python310/bin/python'
 endif
 
 " gutentags
 let g:gutentags_project_root = ['USM_ROOT', 'pytest.ini', '_clang-format']
 
 "ctrlp
-let g:ctrlp_root_markers = ['USM_ROOT', 'pytest.ini', '_clang-format']
+let g:ctrlp_root_markers = ['USM_ROOT', 'pytest.ini', '_clang-format', 'compile_commands.json']
 let g:ctrlp_clear_cache_on_exit = 0
 let g:ctrlp_extensions = ['tag'] "enable search through tags
 let g:ctrlp_working_path_mode = 'r' "disable search through whole svn/git directory
@@ -170,7 +172,7 @@ set mouse =
 let g:ale_fixers = {
 \   '*': ['remove_trailing_lines', 'trim_whitespace'],
 \   'cmake': ['cmakeformat'],
-\   'python': ['remove_trailing_lines', 'trim_whitespace', 'autopep8', 'reorder-python-imports'],
+\   'python': ['remove_trailing_lines', 'trim_whitespace', 'autopep8', 'reorder-python-imports', 'autoimport'],
 \   'xml': ['remove_trailing_lines', 'trim_whitespace', 'xmllint'],
 \   'cpp': ['remove_trailing_lines', 'trim_whitespace', 'clang-format', 'clangtidy'],
 \   'sh': ['remove_trailing_lines', 'trim_whitespace', 'shfmt'],
