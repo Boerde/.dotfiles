@@ -10,7 +10,7 @@ Plug 'Boerde/vim-addon-linux-coding-style'
 Plug 'vim-scripts/taglist.vim'
 Plug 'moll/vim-bbye'
 Plug 'ctrlpvim/ctrlp.vim'
-Plug 'w0rp/ale'
+Plug 'dense-analysis/ale'
 if has('win32')
 	Plug 'JulioJu/neovim-qt-colors-solarized-truecolor-only'
 else
