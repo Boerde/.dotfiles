@@ -87,8 +87,13 @@ for _, lsp in ipairs(servers) do
     }
   }
 end
+-- https://github.com/redhat-developer/yaml-language-server
+nvim_lsp.yamlls.setup{}
+-- https://github.com/regen100/cmake-language-server
+nvim_lsp.cmake.setup{}
+-- https://github.com/redhat-developer/vscode-xml
+nvim_lsp.lemminx.setup{}
 EOF
-
 
 let g:compe = {}
 let g:compe.enabled = v:true
@@ -181,8 +186,16 @@ let g:ale_fixers = {
 " ale linters
 let g:ale_linters = {
 \   'python': ['flake8', 'pylint', 'mypy'],
-\   'cpp': ['gcc', 'clangcheck', 'clangtidy', 'clazy', 'cppcheck', 'cpplint', 'cquery', 'flawfinder']
+\   'cpp': ['clangcheck', 'clangtidy', 'clazy', 'cppcheck', 'cpplint', 'cquery', 'flawfinder']
 \}
+
+let g:ale_cpp_cc_options = '-stdlib=libc++'
+let g:ale_cpp_clangcheck_executable = 'clang-check-14'
+let g:ale_dockerfile_hadolint_use_docker = 'always'
+let g:ale_lint_on_insert_leave = 0
+let g:ale_lint_on_text_changed = "never"
+let g:ale_lint_on_save = 1
+
 
 " Taglist open on start
 let g:Tlist_Auto_Open = 1
@@ -229,6 +242,7 @@ autocmd FileType ruby set tabstop=2|set shiftwidth=2
 au FileType xml imap </ </<c-x><c-o>
 
 autocmd BufEnter Jenkins.* set ft=Jenkinsfile
+autocmd filetype cpp call TrimWhiteSpace()
 
 """"" HOTKEYS
 
@@ -263,6 +277,38 @@ nnoremap <leader>m :AsyncRun make all<CR>:copen<CR>
 
 ""copy all to clipboard
 nnoremap <leader>c :%y+<CR>
+
+function! ToSnake(Word)
+python3 << EOF
+import vim
+from convert_case import snake_case
+snake = snake_case(str(vim.eval('a:Word')))
+EOF
+let l:snake_var = py3eval("snake")
+return l:snake_var
+endfunction
+
+" snakess
+function! SnakeCase()
+    let l:out=system("pylint  -f parseable " . @% . "| grep snake_case | grep -v Module | sed 's/.* name \\\"\\(.*\\)\\\".*/\\1/g'")
+    for l:item in split(l:out)
+        " let l:command_y="printf " . l:item . " | sed -r 's/([a-z0-9])([A-Z])/\\1_\\L\\2/g'"
+        " let l:snake_var=system(command_y)
+        let l:snake_var = ToSnake(l:item)
+        echo l:item
+        :execute '%s/' . l:item . '/' . l:snake_var . '/gc'
+    endfor
+    "let l:var_name=expand("<cword>")
+    "let l:command_y="printf " . var_name . " | sed -r 's/([a-z0-9])([A-Z])/\\1_\\L\\2/g'"
+    "let l:snake_var=system(command_y)
+    ":call jedi#rename()<CR>
+    ":call feedkeys(snake_var)
+    ":execute snake_var
+    ":put =snake_var    
+endfunction
+
+""convert to snake_case with jedi-vim
+nnoremap <leader>w :call SnakeCase()
 
 " open make errors from subdirs
 set path+=$PWD/**
