@@ -1,7 +1,6 @@
 call plug#begin('~/.local/share/nvim/plugged')
 Plug 'Boerde/vim-addon-linux-coding-style'
 Plug 'Matt-Deacalion/vim-systemd-syntax'
-Plug 'Shougo/deoplete-clangx'
 Plug 'Shougo/neco-syntax'
 Plug 'Shougo/neco-vim'
 Plug 'Shougo/neoinclude.vim'
@@ -9,9 +8,7 @@ Plug 'bogado/file-line'
 Plug 'ctrlpvim/ctrlp.vim'
 Plug 'davidhalter/jedi-vim'
 Plug 'dense-analysis/ale'
-Plug 'deoplete-plugins/deoplete-jedi'
 Plug 'dietsche/vim-lastplace'
-Plug 'fishbullet/deoplete-ruby'
 Plug 'hrsh7th/nvim-compe'
 Plug 'ludovicchabant/vim-gutentags'
 Plug 'martinda/Jenkinsfile-vim-syntax'
@@ -30,7 +27,6 @@ if has('win32')
 else
 	Plug 'altercation/vim-colors-solarized'
 endif
-Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 call plug#end()
 
 "disable jedi completion as this is done by deoplete
