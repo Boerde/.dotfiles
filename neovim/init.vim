@@ -5,8 +5,8 @@ Plug 'Shougo/neco-syntax'
 Plug 'Shougo/neco-vim'
 Plug 'Shougo/neoinclude.vim'
 Plug 'bogado/file-line'
-Plug 'ctrlpvim/ctrlp.vim'
 Plug 'davidhalter/jedi-vim'
+Plug 'dcampos/nvim-snippy'
 Plug 'dense-analysis/ale'
 Plug 'dietsche/vim-lastplace'
 Plug 'hrsh7th/nvim-compe'
@@ -16,6 +16,7 @@ Plug 'martinda/Jenkinsfile-vim-syntax'
 Plug 'moll/vim-bbye'
 Plug 'nathanalderson/yang.vim'
 Plug 'neovim/nvim-lspconfig'
+Plug 'paul-nechifor/vim-svn-blame'
 Plug 'skywind3000/asyncrun.vim'
 Plug 'tpope/vim-fugitive'
 Plug 'vim-airline/vim-airline'
@@ -23,6 +24,18 @@ Plug 'vim-airline/vim-airline-themes'
 Plug 'vim-scripts/taglist.vim'
 Plug 'wannesm/wmgraphviz.vim'
 Plug 'wellle/tmux-complete.vim'
+Plug 'github/copilot.vim', { 'branch': 'release' }
+Plug 'CopilotC-Nvim/CopilotChat.nvim', { 'branch': 'main' }
+" PlantUml Plugins
+Plug 'aklt/plantuml-syntax'
+Plug 'tyru/open-browser.vim'
+Plug 'weirongxu/plantuml-previewer.vim'
+" Telescope plugins
+Plug 'nvim-telescope/telescope.nvim', { 'rev': '0.1.x' }
+Plug 'nvim-telescope/telescope-fzf-native.nvim', {'branch': 'main', 'do': 'cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release && cmake --install build --prefix build' }
+Plug 'nvim-lua/plenary.nvim'
+" jenkins
+Plug 'ckipp01/nvim-jenkinsfile-linter', { 'branch': 'main' }
 if has('win32')
 	Plug 'JulioJu/neovim-qt-colors-solarized-truecolor-only'
 else
@@ -33,63 +46,67 @@ call plug#end()
 "disable jedi completion as this is done by deoplete
 let g:jedi#completions_enabled = 0
 
-autocmd FileType c,cpp,h,hpp
-	\ call deoplete#custom#buffer_option('auto_complete', v:false) |
-	\ let g:ctrlp_user_command = 'rg %s --files --color=never --glob "*.cpp" --glob "*.h"'
-
 lua << EOF
 local nvim_lsp = require('lspconfig')
 
--- Use an on_attach function to only map the following keys
--- after the language server attaches to the current buffer
-local on_attach = function(client, bufnr)
-  local function buf_set_keymap(...) vim.api.nvim_buf_set_keymap(bufnr, ...) end
-  local function buf_set_option(...) vim.api.nvim_buf_set_option(bufnr, ...) end
-
-  --Enable completion triggered by <c-x><c-o>
-  -- buf_set_option('omnifunc', 'v:lua.vim.lsp.omnifunc')
-
-  -- Mappings.
-  local opts = { noremap=true, silent=true }
-
-  -- buf_set_keymap('n', '<C-k>', '<cmd>lua vim.lsp.buf.signature_help()<CR>', opts)
-  -- See `:help vim.lsp.*` for documentation on any of the below functions
-  buf_set_keymap('n', 'gD', '<cmd>lua vim.lsp.buf.declaration()<CR>', opts)
-  buf_set_keymap('n', 'gd', '<cmd>lua vim.lsp.buf.definition()<CR>', opts)
-  buf_set_keymap('n', 'K', '<cmd>lua vim.lsp.buf.hover()<CR>', opts)
-  buf_set_keymap('n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<CR>', opts)
-  buf_set_keymap('n', '<space>wa', '<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>', opts)
-  buf_set_keymap('n', '<space>wr', '<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>', opts)
-  buf_set_keymap('n', '<space>wl', '<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>', opts)
-  buf_set_keymap('n', '<space>D', '<cmd>lua vim.lsp.buf.type_definition()<CR>', opts)
-  buf_set_keymap('n', '<space>rn', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
-  buf_set_keymap('n', '<space>ca', '<cmd>lua vim.lsp.buf.code_action()<CR>', opts)
-  buf_set_keymap('n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>', opts)
-  buf_set_keymap('n', '<space>e', '<cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<CR>', opts)
-  buf_set_keymap('n', '[d', '<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>', opts)
-  buf_set_keymap('n', ']d', '<cmd>lua vim.lsp.diagnostic.goto_next()<CR>', opts)
-  buf_set_keymap('n', '<space>q', '<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>', opts)
-  buf_set_keymap('n', '<space>f', '<cmd>lua vim.lsp.buf.formatting()<CR>', opts)
-
-end
-
--- Use a loop to conveniently call 'setup' on multiple servers and
--- map buffer local keybindings when the language server attaches
-local servers = { 'clangd' }
-for _, lsp in ipairs(servers) do
-  nvim_lsp[lsp].setup {
-    on_attach = on_attach,
-    flags = {
-      debounce_text_changes = 150,
-    }
-  }
-end
+nvim_lsp.clangd.setup{}
 -- https://github.com/redhat-developer/yaml-language-server
 nvim_lsp.yamlls.setup{}
 -- https://github.com/regen100/cmake-language-server
 nvim_lsp.cmake.setup{}
 -- https://github.com/redhat-developer/vscode-xml
 nvim_lsp.lemminx.setup{}
+-- https://github.com/hrsh7th/vscode-langservers-extracted
+local capabilities = vim.lsp.protocol.make_client_capabilities()
+capabilities.textDocument.completion.completionItem.snippetSupport = true
+nvim_lsp.html.setup {
+    capabilities = capabilities,
+}
+-- https://github.com/pappasam/jedi-language-server
+nvim_lsp.jedi_language_server.setup{}
+-- https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md#qmlls
+nvim_lsp.qmlls.setup{
+    cmd = { "/usr/lib/qt6/bin/qmlls" }
+}
+
+-- Global mappings.
+-- See `:help vim.diagnostic.*` for documentation on any of the below functions
+vim.keymap.set('n', '<space>e', vim.diagnostic.open_float)
+vim.keymap.set('n', '[d', vim.diagnostic.goto_prev)
+vim.keymap.set('n', ']d', vim.diagnostic.goto_next)
+vim.keymap.set('n', '<space>q', vim.diagnostic.setloclist)
+
+-- Use LspAttach autocommand to only map the following keys
+-- after the language server attaches to the current buffer
+vim.api.nvim_create_autocmd('LspAttach', {
+  group = vim.api.nvim_create_augroup('UserLspConfig', {}),
+  callback = function(ev)
+    -- Enable completion triggered by <c-x><c-o>
+    vim.bo[ev.buf].omnifunc = 'v:lua.vim.lsp.omnifunc'
+
+    -- Buffer local mappings.
+    -- See `:help vim.lsp.*` for documentation on any of the below functions
+    local opts = { buffer = ev.buf }
+    vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, opts)
+    vim.keymap.set('n', 'gd', vim.lsp.buf.definition, opts)
+    vim.keymap.set('n', 'K', vim.lsp.buf.hover, opts)
+    vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, opts)
+    -- vim.keymap.set('n', '<C-k>', vim.lsp.buf.signature_help, opts)
+    vim.keymap.set('n', '<space>wa', vim.lsp.buf.add_workspace_folder, opts)
+    vim.keymap.set('n', '<space>wr', vim.lsp.buf.remove_workspace_folder, opts)
+    vim.keymap.set('n', '<space>wl', function()
+      print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
+    end, opts)
+    vim.keymap.set('n', '<space>D', vim.lsp.buf.type_definition, opts)
+    vim.keymap.set('n', '<space>rn', vim.lsp.buf.rename, opts)
+    vim.keymap.set({ 'n', 'v' }, '<space>ca', vim.lsp.buf.code_action, opts)
+    vim.keymap.set('n', 'gr', vim.lsp.buf.references, opts)
+    vim.keymap.set('n', '<space>f', function()
+      vim.lsp.buf.format { async = true }
+    end, opts)
+  end,
+})
+
 EOF
 
 let g:compe = {}
@@ -118,6 +135,47 @@ let g:compe.source.ultisnips = v:true
 let g:compe.source.luasnip = v:true
 let g:compe.source.emoji = v:true
 
+
+" https://github.com/nvim-telescope/telescope.nvim
+lua << EOF
+require('telescope').load_extension('fzf')
+local builtin = require('telescope.builtin')
+vim.keymap.set('n', '<C-p>', builtin.find_files, {})
+vim.keymap.set('n', '<leader>fg', builtin.live_grep, {})
+vim.keymap.set('n', '<C-b>', builtin.buffers, {})
+vim.keymap.set('n', '<leader>fh', builtin.help_tags, {})
+EOF
+
+" https://copilotc-nvim.github.io/CopilotChat.nvim/
+
+lua << EOF
+local copilot_chat = require("CopilotChat")
+copilot_chat.setup({
+  debug = true,
+  show_help = "yes",
+  prompts = {
+    Explain = "Explain how it works.",
+    Review = "Review the following code and provide concise suggestions.",
+    Tests = "Briefly explain how the selected code works, then generate unit tests.",
+    Refactor = "Refactor the code to improve clarity and readability.",
+  },
+  build = function()
+    vim.notify("Please update the remote plugins by running ':UpdateRemotePlugins', then restart Neovim.")
+  end,
+  event = "VeryLazy",
+})
+
+EOF
+
+nnoremap <leader>ccb <cmd>CopilotChatBuffer<cr>
+nnoremap <leader>cce <cmd>CopilotChatExplain<cr>
+nnoremap <leader>cct <cmd>CopilotChatTests<cr>
+xnoremap <leader>ccv :CopilotChatVisual<cr>
+xnoremap <leader>ccx :CopilotChatInPlace<cr>
+
+" nvim-jenkinsfile-linter
+autocmd VimEnter,BufWritePost *.[jenkins|Jenkinsfile] :lua require("jenkinsfile_linter").validate()
+
 "ignore unknown chars in terminal
 set guicursor=
 
@@ -125,7 +183,7 @@ set guicursor=
 set ignorecase
 set smartcase
 
-set wildignore+=*.exp,*.inf,tags,*.pyc,*.o,*.a,*.ninja,*.png,GeneratedProjects/**
+set wildignore+=*.exp,*.inf,tags,*.pyc,*.o,*.a,*.ninja,*.png
 
 " AsyncRun
 let g:asyncrun_stdin = 1
@@ -136,20 +194,6 @@ if executable("rg")
     set grepformat=%f:%l:%c:%m,%f:%l:%m
 endif
 
-" deoplete on startup
-let g:deoplete#enable_at_startup = 1
-let g:deoplete#tag#cache_limit_size = 50000000
-
-call deoplete#custom#option('sources', {
-            \'c': ['buffer', 'tag', 'file'],
-            \'h': ['buffer', 'tag', 'file'],
-        \})
-let g:deoplete#sources#jedi#enable_short_types = 1
-let g:deoplete#sources#jedi#show_docstring = 1
-call deoplete#custom#option('auto_complete_delay', 5)
-
-call deoplete#custom#var('buffer', 'require_same_filetype', v:false)
-
 if has('win32')
 	let g:python_host_prog = 'C:\Python27\python.exe'
 	let g:python3_host_prog = 'C:\Python38\python.exe'
@@ -159,12 +203,6 @@ endif
 
 " gutentags
 let g:gutentags_project_root = ['USM_ROOT', 'pytest.ini', '_clang-format']
-
-"ctrlp
-let g:ctrlp_root_markers = ['USM_ROOT', 'pytest.ini', '_clang-format', 'compile_commands.json']
-let g:ctrlp_clear_cache_on_exit = 0
-let g:ctrlp_extensions = ['tag'] "enable search through tags
-let g:ctrlp_working_path_mode = 'r' "disable search through whole svn/git directory
 
 
 " disable mouse
@@ -178,6 +216,7 @@ let g:ale_fixers = {
 \   'xml': ['remove_trailing_lines', 'trim_whitespace', 'xmllint'],
 \   'cpp': ['remove_trailing_lines', 'trim_whitespace', 'clang-format', 'clangtidy'],
 \   'sh': ['remove_trailing_lines', 'trim_whitespace', 'shfmt'],
+\   'json': ['jq'],
 \}
 
 " ale linters
@@ -187,7 +226,8 @@ let g:ale_linters = {
 \}
 
 let g:ale_cpp_cc_options = '-stdlib=libc++'
-let g:ale_cpp_clangcheck_executable = 'clang-check-14'
+let g:ale_cpp_clangcheck_executable = 'clang-check-16'
+let g:ale_cpp_clangtidy_executable = 'clang-tidy-16'
 let g:ale_dockerfile_hadolint_use_docker = 'always'
 let g:ale_lint_on_insert_leave = 0
 let g:ale_lint_on_text_changed = "never"
@@ -199,9 +239,6 @@ let g:Tlist_Auto_Open = 1
 " Close Taglist when it is the last window
 let g:Tlist_Exit_OnlyWindow = 1
 
-" deoplete tab-complete
-inoremap <expr><tab> pumvisible() ? "\<c-n>" : "\<tab>"
-
 " Delete whitespaces trailing
 function! TrimWhiteSpace()
     let l = line(".")
@@ -209,6 +246,9 @@ function! TrimWhiteSpace()
     %s/\s\+$//e
     call cursor(l, c)
 endfun
+
+" deoplete tab-complete
+inoremap <expr><tab> pumvisible() ? "\<c-n>" : "\<tab>"
 
 " ctags
 function! CreateCtagsFile (file_ext)
@@ -266,8 +306,11 @@ nnoremap <F3> :grep -t h <cword><CR>:copen<CR>
 "nnoremap <F3> :AsyncRun rg -t h <cword><CR>:copen<CR>
 nnoremap <F4> :grep "<C-R>*"<CR>:copen<CR>
 
+" rename in directory all files
+nnoremap <leader>h :! ./convert.sh <cword><CR>
+
 "" format in c
-nnoremap <leader>f :%!astyle --style=k\&r --brackets=linux --indent-preprocessor --break-blocks --pad-oper --pad-header --unpad-paren --align-pointer=name --convert-tabs<CR>
+"nnoremap <leader>f :%!astyle --style=k\&r --brackets=linux --indent-preprocessor --break-blocks --pad-oper --pad-header --unpad-paren --align-pointer=name --convert-tabs<CR>
 
 ""make
 nnoremap <leader>m :AsyncRun make all<CR>:copen<CR>
@@ -304,8 +347,17 @@ function! SnakeCase()
     ":put =snake_var    
 endfunction
 
+" snakess with sed
+function! SnakeCaseSed()
+    let l:var_name = expand("<cword>")
+    let l:snake_var = ToSnake(l:var_name)
+    let l:command_y="find . -name '*.py' -exec sed -i 's/" . l:var_name . "/" . l:snake_var . "/g' {} +;"
+    call system(l:command_y)
+endfunction
+
 ""convert to snake_case with jedi-vim
 nnoremap <leader>w :call SnakeCase()
+nnoremap <leader>W :call SnakeCaseSed()
 
 " open make errors from subdirs
 set path+=$PWD/**
@@ -386,4 +438,3 @@ set spell spelllang=en_us
 set hlsearch
 
 let g:ctags_statusline=0
-
