@@ -339,6 +339,12 @@ xnoremap <leader>ccx :CopilotChatInPlace<cr>
 " nvim-jenkinsfile-linter
 autocmd VimEnter,BufWritePost *.[jenkins|Jenkinsfile] :lua require("jenkinsfile_linter").validate()
 
+" cmake use 2 spaces
+autocmd FileType cmake setlocal shiftwidth=2 tabstop=2 expandtab
+
+" recognice qml files
+autocmd BufRead,BufNewFile *.qml set filetype=qml
+
 "ignore unknown chars in terminal
 set guicursor=
 
