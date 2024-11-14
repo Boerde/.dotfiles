@@ -228,6 +228,7 @@ EOF
 
 lua << EOF
 local copilot_chat = require("CopilotChat")
+-- Registers copilot-chat source and enables it for copilot-chat filetype (so copilot chat window)
 copilot_chat.setup({
   debug = true,
   show_help = "yes",
@@ -238,10 +239,81 @@ copilot_chat.setup({
     Refactor = "Refactor the code to improve clarity and readability.",
   },
   build = function()
-    vim.notify("Please update the remote plugins by running ':UpdateRemotePlugins', then restart Neovim.")
+    vim.notify("Please update remote plugins by running ':UpdateRemotePlugins', then restart Neovim.")
   end,
   event = "VeryLazy",
+  mappings = {
+    complete = {
+      insert = '',
+    },
+  },
+  keys = {
+  -- Show help actions with telescope
+  {
+    "<leader>ah",
+    function()
+      require("CopilotChat.code_actions").show_help_actions()
+    end,
+    desc = "CopilotChat - Help actions",
+  },
+  -- Show prompts actions with telescope
+  {
+    "<leader>ap",
+    function()
+      require("CopilotChat.code_actions").show_prompt_actions()
+    end,
+    desc = "CopilotChat - Prompt actions",
+  },
+  {
+    "<leader>ap",
+    ":lua require('CopilotChat.code_actions').show_prompt_actions(true)<CR>",
+    mode = "x",
+    desc = "CopilotChat - Prompt actions",
+  },
+  -- Code related commands
+  { "<space>ae", "<cmd>CopilotChatExplain<cr>", desc = "CopilotChat - Explain code" },
+  { "<leader>at", "<cmd>CopilotChatTests<cr>", desc = "CopilotChat - Generate tests" },
+  { "<leader>ar", "<cmd>CopilotChatReview<cr>", desc = "CopilotChat - Review code" },
+  { "<leader>aR", "<cmd>CopilotChatRefactor<cr>", desc = "CopilotChat - Refactor code" },
+  { "<leader>an", "<cmd>CopilotChatBetterNamings<cr>", desc = "CopilotChat - Better Naming" },
+  -- Chat with Copilot in visual mode
+  {
+    "<leader>av",
+    ":CopilotChatVisual",
+    mode = "x",
+    desc = "CopilotChat - Open in vertical split",
+  },
+  {
+    "<leader>ax",
+    ":CopilotChatInPlace<cr>",
+    mode = "x",
+    desc = "CopilotChat - Run in-place code",
+  },
+  -- Custom input for CopilotChat
+  {
+    "<leader>ai",
+    function()
+      local input = vim.fn.input("Ask Copilot: ")
+      if input ~= "" then
+        vim.cmd("CopilotChat " .. input)
+      end
+    end,
+    desc = "CopilotChat - Ask input",
+  },
+  -- Quick chat with Copilot
+  {
+    "<space>aq",
+    function()
+      local input = vim.fn.input("Quick Chat: ")
+      if input ~= "" then
+        vim.cmd("CopilotChatBuffer " .. input)
+      end
+    end,
+    desc = "CopilotChat - Quick chat",
+  },
+  }
 })
+require("CopilotChat.integrations.cmp").setup()
 
 EOF
 
