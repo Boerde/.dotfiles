@@ -30,7 +30,7 @@ Plug 'vim-scripts/taglist.vim'
 Plug 'wannesm/wmgraphviz.vim'
 Plug 'wellle/tmux-complete.vim'
 Plug 'github/copilot.vim', { 'branch': 'release' }
-Plug 'CopilotC-Nvim/CopilotChat.nvim', { 'branch': 'main' }
+Plug 'CopilotC-Nvim/CopilotChat.nvim', { 'branch': 'canary' }
 " PlantUml Plugins
 Plug 'aklt/plantuml-syntax'
 Plug 'tyru/open-browser.vim'
