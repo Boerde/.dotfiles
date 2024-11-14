@@ -367,7 +367,7 @@ if has('win32')
 	let g:python_host_prog = 'C:\Python27\python.exe'
 	let g:python3_host_prog = 'C:\Python38\python.exe'
 else
-    let g:python3_host_prog = '/home/lsoest/venv_python310/bin/python'
+    let g:python3_host_prog = '/home/lsoest/venv_python312/bin/python'
 endif
 
 " gutentags
@@ -395,8 +395,8 @@ let g:ale_linters = {
 \}
 
 let g:ale_cpp_cc_options = '-stdlib=libc++'
-let g:ale_cpp_clangcheck_executable = 'clang-check-16'
-let g:ale_cpp_clangtidy_executable = 'clang-tidy-16'
+let g:ale_cpp_clangcheck_executable = 'clang-check-19'
+let g:ale_cpp_clangtidy_executable = 'clang-tidy-19'
 let g:ale_dockerfile_hadolint_use_docker = 'always'
 let g:ale_lint_on_insert_leave = 0
 let g:ale_lint_on_text_changed = "never"
