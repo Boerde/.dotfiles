@@ -80,7 +80,8 @@ nvim_lsp.html.setup {
 nvim_lsp.jedi_language_server.setup{}
 -- https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md#qmlls
 nvim_lsp.qmlls.setup{
-    cmd = { "/usr/lib/qt6/bin/qmlls" }
+    cmd = { "/usr/lib/qt6/bin/qmlls" },
+    root_dir = require'lspconfig'.util.root_pattern(".qmlproject", ".qmlls.ini", ".git"),
 }
 
 -- Global mappings.
