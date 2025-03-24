@@ -30,7 +30,7 @@ Plug 'vim-scripts/taglist.vim'
 Plug 'wannesm/wmgraphviz.vim'
 Plug 'wellle/tmux-complete.vim'
 Plug 'github/copilot.vim', { 'branch': 'release' }
-Plug 'CopilotC-Nvim/CopilotChat.nvim', { 'branch': 'canary' }
+Plug 'CopilotC-Nvim/CopilotChat.nvim', { 'branch': 'main' }
 Plug 'hrsh7th/vim-vsnip'
 Plug 'hrsh7th/vim-vsnip-integ'
 " PlantUml Plugins
@@ -43,11 +43,8 @@ Plug 'nvim-telescope/telescope-fzf-native.nvim', {'branch': 'main', 'do': 'cmake
 Plug 'nvim-lua/plenary.nvim'
 " jenkins
 Plug 'ckipp01/nvim-jenkinsfile-linter', { 'branch': 'main' }
-if has('win32')
-	Plug 'JulioJu/neovim-qt-colors-solarized-truecolor-only'
-else
-	Plug 'altercation/vim-colors-solarized'
-endif
+Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+Plug 'maxmx03/solarized.nvim'
 call plug#end()
 
 "disable jedi completion as this is done by deoplete
@@ -326,9 +323,17 @@ copilot_chat.setup({
   },
   }
 })
-require("CopilotChat.integrations.cmp").setup()
-
+require("CopilotChat").setup()
 EOF
+
+" https://github.com/maxmx03/solarized.nvim
+lua << EOF
+vim.o.termguicolors = true
+vim.o.background = "light"
+require('solarized').setup({})
+vim.cmd.colorscheme 'solarized'
+EOF
+
 
 nnoremap <leader>ccb <cmd>CopilotChatBuffer<cr>
 nnoremap <leader>cce <cmd>CopilotChatExplain<cr>
@@ -591,16 +596,6 @@ endfunction
 syntax on
 filetype plugin indent on
 filetype plugin on
-if has('win32')
-	let $NVIM_TUI_ENABLE_TRUE_COLOR=1
-	colorscheme solarized_nvimqt
-elseif IsWsl()
-	let g:solarized_termcolors = 16
-	colorscheme solarized
-else
-	let g:solarized_termcolors = 256
-	colorscheme solarized
-endif
 
 set background=dark
 set spell spelllang=en_us
