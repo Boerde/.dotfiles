@@ -31,6 +31,8 @@ Plug 'wannesm/wmgraphviz.vim'
 Plug 'wellle/tmux-complete.vim'
 Plug 'github/copilot.vim', { 'branch': 'release' }
 Plug 'CopilotC-Nvim/CopilotChat.nvim', { 'branch': 'canary' }
+Plug 'hrsh7th/vim-vsnip'
+Plug 'hrsh7th/vim-vsnip-integ'
 " PlantUml Plugins
 Plug 'aklt/plantuml-syntax'
 Plug 'tyru/open-browser.vim'
@@ -83,6 +85,8 @@ nvim_lsp.qmlls.setup{
     cmd = { "/usr/lib/qt6/bin/qmlls" },
     root_dir = require'lspconfig'.util.root_pattern(".qmlproject", ".qmlls.ini", ".git"),
 }
+
+nvim_lsp.ruff.setup({})
 
 -- Global mappings.
 -- See `:help vim.diagnostic.*` for documentation on any of the below functions
@@ -149,7 +153,7 @@ end
         -- require('luasnip').lsp_expand(args.body) -- For `luasnip` users.
         -- require('snippy').expand_snippet(args.body) -- For `snippy` users.
         -- vim.fn["UltiSnips#Anon"](args.body) -- For `ultisnips` users.
-        vim.snippet.expand(args.body) -- For native neovim snippets (Neovim v0.10+)
+        -- vim.snippet.expand(args.body) -- For native neovim snippets (Neovim v0.10+)
       end,
     },
     window = {
@@ -165,10 +169,6 @@ end
       ['<Tab>'] = cmp.mapping(function(fallback)
         if cmp.visible() then
           cmp.select_next_item()
-        elseif vim.fn['vsnip#available'](1) == 1 then
-          feedkey('<Plug>(vsnip-expand-or-jump)', '')
-        elseif has_words_before() then
-          cmp.complete()
         else
           fallback() -- The fallback function sends a already mapped key. In this case, it's probably `<Tab>`.
         end
@@ -395,8 +395,8 @@ let g:ale_linters = {
 \}
 
 let g:ale_cpp_cc_options = '-stdlib=libc++'
-let g:ale_cpp_clangcheck_executable = 'clang-check-19'
-let g:ale_cpp_clangtidy_executable = 'clang-tidy-19'
+let g:ale_cpp_clangcheck_executable = 'clang-check'
+let g:ale_cpp_clangtidy_executable = 'clang-tidy'
 let g:ale_dockerfile_hadolint_use_docker = 'always'
 let g:ale_lint_on_insert_leave = 0
 let g:ale_lint_on_text_changed = "never"
