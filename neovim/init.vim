@@ -29,6 +29,7 @@ Plug 'vim-airline/vim-airline-themes'
 Plug 'vim-scripts/taglist.vim'
 Plug 'wannesm/wmgraphviz.vim'
 Plug 'wellle/tmux-complete.vim'
+" https://github.com/CopilotC-Nvim/CopilotChat.nvim
 Plug 'github/copilot.vim', { 'branch': 'release' }
 Plug 'CopilotC-Nvim/CopilotChat.nvim', { 'branch': 'main' }
 Plug 'hrsh7th/vim-vsnip'
@@ -333,6 +334,7 @@ vim.o.background = "light"
 require('solarized').setup({})
 vim.cmd.colorscheme 'solarized'
 EOF
+autocmd ColorScheme * highlight SpellBad cterm=underline gui=underline
 
 
 nnoremap <leader>ccb <cmd>CopilotChatBuffer<cr>
