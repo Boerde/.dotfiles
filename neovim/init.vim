@@ -243,14 +243,7 @@ lua << EOF
 local copilot_chat = require("CopilotChat")
 -- Registers copilot-chat source and enables it for copilot-chat filetype (so copilot chat window)
 copilot_chat.setup({
-  debug = true,
-  show_help = "yes",
-  prompts = {
-    Explain = "Explain how it works.",
-    Review = "Review the following code and provide concise suggestions.",
-    Tests = "Briefly explain how the selected code works, then generate unit tests.",
-    Refactor = "Refactor the code to improve clarity and readability.",
-  },
+  model = 'claude-sonnet-4',
   build = function()
     vim.notify("Please update remote plugins by running ':UpdateRemotePlugins', then restart Neovim.")
   end,
@@ -326,7 +319,6 @@ copilot_chat.setup({
   },
   }
 })
-require("CopilotChat").setup()
 EOF
 
 " https://github.com/maxmx03/solarized.nvim
