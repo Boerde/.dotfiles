@@ -331,6 +331,12 @@ EOF
 autocmd ColorScheme * highlight SpellBad cterm=underline gui=underline
 
 
+" https://github.com/hrsh7th/vscode-langservers-extracted
+lua << EOF
+require'lspconfig'.jsonls.setup{}
+EOF
+
+
 nnoremap <leader>ccb <cmd>CopilotChatBuffer<cr>
 nnoremap <leader>cce <cmd>CopilotChatExplain<cr>
 nnoremap <leader>cct <cmd>CopilotChatTests<cr>
