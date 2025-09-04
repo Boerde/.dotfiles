@@ -356,7 +356,7 @@ autocmd ColorScheme * highlight SpellBad cterm=underline gui=underline
 
 " https://github.com/hrsh7th/vscode-langservers-extracted
 lua << EOF
-require'lspconfig'.jsonls.setup{}
+vim.lsp.enable('jsonls')
 EOF
 
 " https://github.com/nvim-treesitter/nvim-treesitter
