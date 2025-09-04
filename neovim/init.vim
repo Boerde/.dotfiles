@@ -56,9 +56,7 @@ call plug#end()
 let g:jedi#completions_enabled = 0
 
 lua << EOF
-local nvim_lsp = require('lspconfig')
-
-nvim_lsp.rust_analyzer.setup{
+vim.lsp.enable('rust_analyzer', {
   settings = {
     ['rust-analyzer'] = {
       diagnostics = {
@@ -66,29 +64,32 @@ nvim_lsp.rust_analyzer.setup{
       }
     }
   }
-}
-nvim_lsp.clangd.setup{}
+})
+
+vim.lsp.enable('clangd')
 -- https://github.com/redhat-developer/yaml-language-server
-nvim_lsp.yamlls.setup{}
+vim.lsp.enable('yamlls')
 -- https://github.com/regen100/cmake-language-server
-nvim_lsp.cmake.setup{}
+vim.lsp.enable('cmake')
 -- https://github.com/redhat-developer/vscode-xml
-nvim_lsp.lemminx.setup{}
+vim.lsp.enable('lemminx')
 -- https://github.com/hrsh7th/vscode-langservers-extracted
 local capabilities = vim.lsp.protocol.make_client_capabilities()
 capabilities.textDocument.completion.completionItem.snippetSupport = true
-nvim_lsp.html.setup {
+vim.lsp.enable('html', {
     capabilities = capabilities,
-}
+})
 -- https://github.com/pappasam/jedi-language-server
-nvim_lsp.jedi_language_server.setup{}
+vim.lsp.enable('jedi_language_server')
 -- https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md#qmlls
-nvim_lsp.qmlls.setup{
+vim.lsp.enable('qmlls', {
     cmd = { "/usr/lib/qt6/bin/qmlls" },
-    root_dir = require'lspconfig'.util.root_pattern(".qmlproject", ".qmlls.ini", ".git"),
-}
+    root_dir = function(fname)
+        return vim.fs.root(fname, {".qmlproject", ".qmlls.ini", ".git"})
+    end,
+})
 
-nvim_lsp.ruff.setup({})
+vim.lsp.enable('ruff')
 
 -- Global mappings.
 -- See `:help vim.diagnostic.*` for documentation on any of the below functions
