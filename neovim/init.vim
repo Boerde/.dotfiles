@@ -47,6 +47,9 @@ Plug 'nvim-lua/plenary.nvim'
 Plug 'ckipp01/nvim-jenkinsfile-linter', { 'branch': 'main' }
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 Plug 'maxmx03/solarized.nvim'
+" markdown
+Plug 'echasnovski/mini.nvim'
+Plug 'MeanderingProgrammer/render-markdown.nvim'
 call plug#end()
 
 "disable jedi completion as this is done by deoplete
@@ -127,6 +130,11 @@ vim.api.nvim_create_autocmd('LspAttach', {
 
 EOF
 
+" https://github.com/MeanderingProgrammer/render-markdown.nvim
+lua << EOF
+require('render-markdown').setup({})
+EOF
+
 " https://github.com/hrsh7th/nvim-cmp
 " https://github.com/hrsh7th/nvim-cmp/wiki/Example-mappings#super-tab-like-mapping
 lua <<EOF
@@ -188,6 +196,9 @@ end
       -- { name = 'snippy' }, -- For snippy users.
     }, {
       { name = 'buffer' },
+      { name = 'render-markdown' },
+      { name = 'path' },
+
     })
   })
 
@@ -336,12 +347,19 @@ lua << EOF
 require'lspconfig'.jsonls.setup{}
 EOF
 
-
-nnoremap <leader>ccb <cmd>CopilotChatBuffer<cr>
-nnoremap <leader>cce <cmd>CopilotChatExplain<cr>
-nnoremap <leader>cct <cmd>CopilotChatTests<cr>
-xnoremap <leader>ccv :CopilotChatVisual<cr>
-xnoremap <leader>ccx :CopilotChatInPlace<cr>
+" https://github.com/nvim-treesitter/nvim-treesitter
+lua << EOF
+require'nvim-treesitter.configs'.setup {
+  ensure_installed = { "c", "lua", "vim", "vimdoc", "query", "markdown", "markdown_inline" },
+  highlight = {
+    enable = true,
+    additional_vim_regex_highlighting = false,
+  },
+  indent = {
+    enable = true,
+  },
+}
+EOF
 
 " nvim-jenkinsfile-linter
 autocmd VimEnter,BufWritePost *.[jenkins|Jenkinsfile] :lua require("jenkinsfile_linter").validate()
@@ -499,8 +517,8 @@ python3 << EOF
 import vim
 from convert_case import snake_case
 snake = snake_case(str(vim.eval('a:Word')))
+vim.command("let l:snake_var = '%s'" % snake.replace("'", "''"))
 EOF
-let l:snake_var = py3eval("snake")
 return l:snake_var
 endfunction
 
