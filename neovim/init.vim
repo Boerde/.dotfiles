@@ -58,6 +58,7 @@ call plug#end()
 let g:jedi#completions_enabled = 0
 
 lua << EOF
+-- Use vim.lsp.enable() for Neovim 0.11+
 vim.lsp.enable('rust_analyzer', {
   settings = {
     ['rust-analyzer'] = {
@@ -167,7 +168,7 @@ end
       end,
     },
     window = {
-      -- completion = cmp.config.window.bordered(),
+      -- completion = cmp.config.windom.bordered(),
       -- documentation = cmp.config.window.bordered(),
     },
     mapping = cmp.mapping.preset.insert({
@@ -237,17 +238,6 @@ end
 
   -- Set up lspconfig.
   local capabilities = require('cmp_nvim_lsp').default_capabilities()
-  
-  -- Apply capabilities to all LSP servers
-  local lspconfig = require('lspconfig')
-  local servers = {'rust_analyzer', 'clangd', 'yamlls', 'cmake', 'lemminx', 'html', 'jedi_language_server', 'qmlls', 'ruff', 'jsonls'}
-  
-  for _, server in ipairs(servers) do
-    if lspconfig[server] then
-      local config = lspconfig[server].manager and lspconfig[server].manager.config or {}
-      config.capabilities = capabilities
-    end
-  end
 EOF
 
 
