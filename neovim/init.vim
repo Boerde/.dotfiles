@@ -250,6 +250,25 @@ vim.keymap.set('n', '<C-p>', builtin.find_files, {})
 vim.keymap.set('n', '<leader>fg', builtin.live_grep, {})
 vim.keymap.set('n', '<C-b>', builtin.buffers, {})
 vim.keymap.set('n', '<leader>fh', builtin.help_tags, {})
+
+-- do a live_grep for the cword under cursor with F2
+vim.keymap.set("n", "<F2>", function()
+  builtin.live_grep({ default_text = vim.fn.expand("<cword>") })
+end, { desc = "Telescope live grep for cword" })
+
+-- use compile_commands.json to find files if it exists
+vim.keymap.set("n", "<leader>cc", function()
+  if vim.loop.fs_stat("compile_commands.json") then
+    builtin.find_files({
+      prompt_title = "compile_commands.json files",
+      find_command = { "sh", "-c", [[jq -r '.[].file' compile_commands.json | sort -u]] },
+    })
+  else
+    -- normal Telescope behavior (uses your configured defaults: fd/rg/etc)
+    builtin.find_files({})
+  end
+end, { desc = "Telescope find files (fallback if no compile_commands.json)" })
+
 EOF
 
 " https://copilotc-nvim.github.io/CopilotChat.nvim/
