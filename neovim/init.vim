@@ -50,6 +50,8 @@ Plug 'maxmx03/solarized.nvim'
 " markdown
 Plug 'echasnovski/mini.nvim'
 Plug 'MeanderingProgrammer/render-markdown.nvim'
+"markdown in browser
+Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app && npx --yes yarn install' }
 call plug#end()
 
 "disable jedi completion as this is done by deoplete
